@@ -1,5 +1,6 @@
 package bi.hogi.e_miagefestival;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,10 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             holder.btn_make_fav.setVisibility(View.VISIBLE);
             holder.btn_make_unfav.setVisibility(View.GONE);
         }
-        holder.btn_make_fav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        });
-        holder.btn_make_unfav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
+        holder.view_make_fav.setOnClickListener(v -> band.is_favorite = !band.is_favorite);
+        holder.itemView.setOnClickListener(view -> {
+            Intent intent = new Intent(activity, DetailsActivity.class);
+            activity.startActivity(intent);
         });
     }
 
@@ -74,6 +70,8 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
         TextView txt_artiste, txt_details;
         ImageView img_group_logo;
         ImageButton btn_make_fav, btn_make_unfav;
+        View view_make_fav;
+
         public GroupModelItem(@NonNull View itemView) {
             super(itemView);
             img_group_logo = itemView.findViewById(R.id.img_group_logo);
@@ -81,6 +79,7 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             txt_details = itemView.findViewById(R.id.txt_details);
             btn_make_fav = itemView.findViewById(R.id.btn_make_unfav);
             btn_make_unfav = itemView.findViewById(R.id.btn_make_fav);
+            view_make_fav = itemView.findViewById(R.id.view_make_fav);
         }
     }
 }
