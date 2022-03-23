@@ -35,7 +35,7 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
         final GroupModel band = bands.get(position);
         holder.txt_artiste.setText(band.artiste);
         try {
-            holder.txt_details.setText(band.texte.substring(0, 100));
+            holder.txt_details.setText(band.texte.substring(0, 100)+"...");
         } catch (Exception e){
             holder.txt_details.setText(band.texte);
         }
