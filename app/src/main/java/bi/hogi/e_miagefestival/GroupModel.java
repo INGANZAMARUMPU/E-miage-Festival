@@ -1,7 +1,9 @@
 package bi.hogi.e_miagefestival;
 
 public class GroupModel {
-    public  String artiste, texte, web, image, scene, jour, heure;
+    public  String artiste = "obtention en cours";
+    public String texte = "obtention en cours";
+    public String web, image, scene, jour, heure;
     public int time;
     public boolean is_favorite = false;
 
