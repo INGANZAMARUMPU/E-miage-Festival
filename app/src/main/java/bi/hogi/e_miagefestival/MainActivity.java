@@ -2,6 +2,7 @@ package bi.hogi.e_miagefestival;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +10,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<GroupModel> bands;
     private CardGroup adaptateur;
     ProgressBar progressbar;
+    SwipeRefreshLayout swipe_refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         recycler = findViewById(R.id.liste_bands);
         progressbar = findViewById(R.id.progressbar);
+        swipe_refresh = findViewById(R.id.swipe_refresh);
         bands = new ArrayList<>();
         adaptateur = new CardGroup(this, bands);
         recycler.setAdapter(adaptateur);
         chargerGroupModels();
+        swipe_refresh.setOnRefreshListener(() -> {
+            chargerGroupModels();
+        });
     }
 
     @Override
@@ -49,16 +66,22 @@ public class MainActivity extends AppCompatActivity {
     private void chargerGroupModels() {
         progressbar.setVisibility(View.VISIBLE);
         OkHttpClient client = new OkHttpClient();
-        HttpUrl.Builder urlBuilder = HttpUrl.parse(HOST.URL).newBuilder();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(HOST.URL+"/liste").newBuilder();
 
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
-                .url(url)
-                .addHeader("Cookie", reminder)
-                .build();
+            .url(url)
+            .addHeader("Cookie", reminder)
+            .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, final IOException e) { }
+            public void onFailure(Call call, final IOException e) {
+                MainActivity.this.runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, "Problème de connectivité", Toast.LENGTH_LONG).show();
+                    progressbar.setVisibility(View.GONE);
+                    swipe_refresh.setRefreshing(false);
+                });
+            }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
@@ -66,25 +89,6 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     JSONObject json_items = new JSONObject(json);
                     JSONObject json_item;
-                    Iterator<String> keys = json_items.keys();
-                    GroupModel band;
-                    while (keys.hasNext()){
-                        String key = keys.next();
-                        json_item = json_items.getJSONObject(key);
-                        band = new GroupModel(
-                                json_item.getDouble("prix"),
-                                json_item.getString("ingredients"),
-                                json_item.getString("image"),
-                                key
-                        );
-                        bands.add(band);
-                    }
-                    ListeActivity.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            adaptateur.notifyDataSetChanged();
-                        }
-                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

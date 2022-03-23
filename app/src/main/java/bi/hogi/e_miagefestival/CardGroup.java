@@ -35,7 +35,7 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
         final GroupModel group = groups.get(position);
         holder.txt_artiste.setText(group.artiste);
         holder.txt_details.setText(group.texte.substring(0, 100));
-        Glide.with(activity).load(HOST.URL+group.image).into(holder.img_group_logo);
+        Glide.with(activity).load(HOST.URL+"/"+group.image).into(holder.img_group_logo);
         if(group.is_favorite){
             holder.btn_make_fav.setVisibility(View.GONE);
             holder.btn_make_unfav.setVisibility(View.VISIBLE);
