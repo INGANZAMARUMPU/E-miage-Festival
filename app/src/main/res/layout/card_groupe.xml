@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
-            android:id="@+id/card_image"
+            android:id="@+id/img_group_logo"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@mipmap/ic_launcher"
@@ -28,7 +28,7 @@
                 android:orientation="horizontal"
                 android:gravity="center">
                 <TextView
-                    android:id="@+id/card_name"
+                    android:id="@+id/txt_artiste"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Diesel Groove"
@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
-                    android:id="@+id/card_ingredient"
+                    android:id="@+id/txt_details"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="7pt"
