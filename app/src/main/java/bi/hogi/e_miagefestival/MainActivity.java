@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "=== PIZZA ===";
     private RecyclerView recycler;
     private String reminder;
-    private ArrayList<GroupModel> bands;
+    private ArrayList<GroupModel> bands = new ArrayList<>();
     private CardGroup adaptateur;
     ProgressBar progressbar;
     SwipeRefreshLayout swipe_refresh;
@@ -71,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         String url = urlBuilder.build().toString();
         Request request = new Request.Builder()
             .url(url)
-            .addHeader("Cookie", reminder)
             .build();
         client.newCall(request).enqueue(new Callback() {
             @Override
@@ -87,8 +87,19 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 String json = response.body().string();
                 try {
-                    JSONObject json_items = new JSONObject(json);
-                    JSONObject json_item;
+                    JSONArray json_items = new JSONObject(json).getJSONArray("data");
+                    GroupModel band;
+                    String id;
+                    for (int i=0; i<json_items.length(); i++){
+                        id = (String) json_items.get(i);
+                        band = new GroupModel(id);
+                        band.artiste = id;
+                        bands.add(band);
+                    }
+                    MainActivity.this.runOnUiThread(() -> {
+                        adaptateur.setData(bands);
+                        adaptateur.notifyDataSetChanged();
+                    });
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

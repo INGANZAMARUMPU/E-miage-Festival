@@ -16,11 +16,11 @@ import java.util.ArrayList;
 
 public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
     private MainActivity activity;
-    private ArrayList<GroupModel> groups;
+    private ArrayList<GroupModel> bands;
 
-    public CardGroup(MainActivity activity, ArrayList<GroupModel> groups) {
+    public CardGroup(MainActivity activity, ArrayList<GroupModel> bands) {
         this.activity = activity;
-        this.groups = groups;
+        this.bands = bands;
     }
 
     @NonNull
@@ -32,11 +32,17 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
 
     @Override
     public void onBindViewHolder(@NonNull final GroupModelItem holder, int position) {
-        final GroupModel group = groups.get(position);
-        holder.txt_artiste.setText(group.artiste);
-        holder.txt_details.setText(group.texte.substring(0, 100));
-        Glide.with(activity).load(HOST.URL+"/"+group.image).into(holder.img_group_logo);
-        if(group.is_favorite){
+        final GroupModel band = bands.get(position);
+        holder.txt_artiste.setText(band.artiste);
+        try {
+            holder.txt_details.setText(band.texte.substring(0, 100));
+        } catch (Exception e){
+            holder.txt_details.setText(band.texte);
+        }
+        if(band.image != null){
+            Glide.with(activity).load(HOST.URL+"/"+band.image).into(holder.img_group_logo);
+        }
+        if(band.is_favorite){
             holder.btn_make_fav.setVisibility(View.GONE);
             holder.btn_make_unfav.setVisibility(View.VISIBLE);
         } else {
@@ -57,7 +63,11 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
 
     @Override
     public int getItemCount() {
-        return groups.size();
+        return bands.size();
+    }
+
+    public void setData(ArrayList<GroupModel> bands) {
+        this.bands = bands;
     }
 
     public class GroupModelItem extends RecyclerView.ViewHolder {
@@ -68,9 +78,9 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             super(itemView);
             img_group_logo = itemView.findViewById(R.id.img_group_logo);
             txt_artiste = itemView.findViewById(R.id.txt_artiste);
-            txt_details = itemView.findViewById(R.id.btn_make_fav);
+            txt_details = itemView.findViewById(R.id.txt_details);
             btn_make_fav = itemView.findViewById(R.id.btn_make_unfav);
-            btn_make_unfav = itemView.findViewById(R.id.txt_details);
+            btn_make_unfav = itemView.findViewById(R.id.btn_make_fav);
         }
     }
 }
