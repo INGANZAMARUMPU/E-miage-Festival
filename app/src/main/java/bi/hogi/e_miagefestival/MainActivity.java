@@ -48,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
         recycler.setAdapter(adaptateur);
         chargerGroupModels();
         swipe_refresh.setOnRefreshListener(() -> {
-            chargerGroupModels();
+            if(bands.size()==0)
+                chargerGroupModels();
+            else
+                swipe_refresh.setRefreshing(false);
         });
     }
 
@@ -99,6 +102,50 @@ public class MainActivity extends AppCompatActivity {
                     MainActivity.this.runOnUiThread(() -> {
                         adaptateur.setData(bands);
                         adaptateur.notifyDataSetChanged();
+                        fetchMoreInfos(0);
+                        progressbar.setVisibility(View.GONE);
+                        swipe_refresh.setRefreshing(false);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void fetchMoreInfos(int i) {
+        if (i >= bands.size()) return;
+        GroupModel band = bands.get(i);
+        if(!band.artiste.equals(band.id)) return;
+        OkHttpClient client = new OkHttpClient();
+        HttpUrl.Builder urlBuilder = HttpUrl.parse(HOST.URL+"/info/"+band.artiste).newBuilder();
+
+        String url = urlBuilder.build().toString();
+        Request request = new Request.Builder().url(url).build();
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, final IOException e) { }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String json = response.body().string();
+                try {
+                    JSONObject json_object = new JSONObject(json).getJSONObject("data");
+                    GroupModel fetched_band = new GroupModel(
+                        json_object.getString("artiste"),
+                        json_object.getString("texte"),
+                        json_object.getString("web"),
+                        json_object.getString("image"),
+                        json_object.getString("scene"),
+                        json_object.getString("jour"),
+                        json_object.getString("heure"),
+                        json_object.getInt("time")
+                    );
+                    MainActivity.this.runOnUiThread(() -> {
+                        bands.set(i, fetched_band);
+                        adaptateur.setData(bands);
+                        adaptateur.notifyItemChanged(i);
+                        fetchMoreInfos(i+1);
                     });
                 } catch (Exception e) {
                     e.printStackTrace();
