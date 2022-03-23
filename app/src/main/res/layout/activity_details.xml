@@ -126,7 +126,7 @@
             android:id="@+id/btn_make_fav"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ajouter au favoris"
+            android:text="ajouter aux favoris"
             android:layout_margin="10dp"/>
     </LinearLayout>
 </ScrollView>

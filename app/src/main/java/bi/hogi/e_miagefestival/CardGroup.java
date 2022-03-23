@@ -50,9 +50,17 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             holder.btn_make_fav.setVisibility(View.VISIBLE);
             holder.btn_make_unfav.setVisibility(View.GONE);
         }
-        holder.view_make_fav.setOnClickListener(v -> band.is_favorite = !band.is_favorite);
+        holder.btn_make_unfav.setOnClickListener(v -> {
+            band.is_favorite = !band.is_favorite;
+            notifyItemChanged(position);
+        });
+        holder.btn_make_fav.setOnClickListener(v -> {
+            band.is_favorite = !band.is_favorite;
+            notifyItemChanged(position);
+        });
         holder.itemView.setOnClickListener(view -> {
             Intent intent = new Intent(activity, DetailsActivity.class);
+            intent.putExtra("band", band);
             activity.startActivity(intent);
         });
     }

@@ -1,6 +1,8 @@
 package bi.hogi.e_miagefestival;
 
-public class GroupModel {
+import java.io.Serializable;
+
+public class GroupModel implements Serializable {
     public String id;
     public  String artiste = "obtention en cours...";
     public String texte = "obtention en cours...";

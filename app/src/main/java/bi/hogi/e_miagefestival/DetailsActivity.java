@@ -8,11 +8,16 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
+import java.io.Serializable;
+
 public class DetailsActivity extends AppCompatActivity {
 
     ImageView img_group_logo;
     TextView txt_artiste, txt_details, txt_website, txt_jour, txt_heure, txt_scene;
     Button btn_make_fav;
+    private GroupModel band;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,5 +32,20 @@ public class DetailsActivity extends AppCompatActivity {
         txt_heure = findViewById(R.id.txt_heure);
         txt_scene = findViewById(R.id.txt_scene);
         btn_make_fav = findViewById(R.id.btn_make_fav);
+
+        band = (GroupModel) getIntent().getSerializableExtra("band");
+
+        txt_artiste.setText(band.artiste);
+        txt_details.setText(band.texte);
+        txt_website.setText(band.web);
+        txt_jour.setText(band.jour);
+        txt_heure.setText(band.heure);
+        txt_scene.setText(band.scene);
+        Glide.with(this).load(HOST.URL+"/"+band.image).into(img_group_logo);
+        if(band.is_favorite){
+            btn_make_fav.setText("supprimer des favoris");
+        } else {
+            btn_make_fav.setText("ajouter au favoris");
+        }
     }
 }
