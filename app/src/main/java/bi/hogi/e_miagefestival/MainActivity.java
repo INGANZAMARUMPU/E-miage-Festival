@@ -6,6 +6,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private CardGroup adaptateur;
     ProgressBar progressbar;
     SwipeRefreshLayout swipe_refresh;
+    public AppContext app_context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
         adaptateur = new CardGroup(this, bands);
         recycler.setAdapter(adaptateur);
         chargerGroupModels();
+
+        app_context = ((AppContext) this.getApplication());
+        app_context.init();
+
+        app_context.bands.observe(this, bands -> {
+            Log.i("==== MAIN ACTIVITY ====", bands.toString());
+            adaptateur.notifyDataSetChanged();
+        });
+
         swipe_refresh.setOnRefreshListener(() -> {
             if(bands.size()==0)
                 chargerGroupModels();
@@ -141,6 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         json_object.getString("heure"),
                         json_object.getInt("time")
                     );
+                    fetched_band.id = band.id;
                     MainActivity.this.runOnUiThread(() -> {
                         bands.set(i, fetched_band);
                         adaptateur.setData(bands);

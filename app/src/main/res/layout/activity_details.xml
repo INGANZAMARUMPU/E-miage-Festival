@@ -18,15 +18,15 @@
                 android:layout_height="match_parent"
                 android:src="@mipmap/ic_launcher_round"
                 android:scaleType="centerCrop"
-                android:layout_centerInParent="true"
-                android:layout_marginRight="10dp"/>
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:background="#dfdd"
                 android:layout_alignParentBottom="true"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:paddingLeft="10dp">
                 <TextView
                     android:id="@+id/txt_artiste"
                     android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="7pt"
                 android:layout_weight="1"
-                android:text="Sorry We Are Late est un jeune groupe amiénois aux influences variées. Véritable mélange de sonorités hip-hop, funk, rock doté d'une légère touche de jazz, ils commencent à se faire entendre en Picardie depuis le début de cette année 2017. Ces 5 jeunes musiciens savent faire bouger vos têtes aux grès de leurs envies, et vous invite à vous laisser porter par la bonne humeur qui les anime sur scène."/>
+                android:text="informations"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:lines="1"
-                    android:text="https://www.facebook.com/sorrywearelate/"
+                    android:text="https://www.websites.com/"
                     android:textStyle="italic"
                     android:textColor="#050"/>
             </LinearLayout>
@@ -113,6 +113,11 @@
                     android:layout_height="wrap_content"
                     android:src="@drawable/ic_music"
                     android:layout_marginRight="10dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Scene"
+                    android:layout_marginRight="5dp"/>
                 <TextView
                     android:id="@+id/txt_scene"
                     android:layout_width="wrap_content"

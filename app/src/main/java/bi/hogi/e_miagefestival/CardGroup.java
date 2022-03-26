@@ -43,7 +43,7 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
         if(band.image != null){
             Glide.with(activity).load(HOST.URL+"/"+band.image).into(holder.img_group_logo);
         }
-        if(band.is_favorite){
+        if(activity.app_context.inFavorites(band.id)){
             holder.btn_make_fav.setVisibility(View.GONE);
             holder.btn_make_unfav.setVisibility(View.VISIBLE);
         } else {
@@ -51,11 +51,11 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             holder.btn_make_unfav.setVisibility(View.GONE);
         }
         holder.btn_make_unfav.setOnClickListener(v -> {
-            band.is_favorite = !band.is_favorite;
+            activity.app_context.toggleFavorite(band.id);
             notifyItemChanged(position);
         });
         holder.btn_make_fav.setOnClickListener(v -> {
-            band.is_favorite = !band.is_favorite;
+            activity.app_context.toggleFavorite(band.id);
             notifyItemChanged(position);
         });
         holder.itemView.setOnClickListener(view -> {

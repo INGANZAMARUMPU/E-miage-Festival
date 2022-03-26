@@ -1,5 +1,7 @@
 package bi.hogi.e_miagefestival;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.io.Serializable;
 
 public class GroupModel implements Serializable {
@@ -8,7 +10,6 @@ public class GroupModel implements Serializable {
     public String texte = "obtention en cours...";
     public String web, image, scene, jour, heure;
     public int time;
-    public boolean is_favorite = false;
 
     public GroupModel(String id) {
         this.id = id;
@@ -23,5 +24,10 @@ public class GroupModel implements Serializable {
         this.jour = jour;
         this.heure = heure;
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "GroupModel{artiste='" + artiste + "'}";
     }
 }

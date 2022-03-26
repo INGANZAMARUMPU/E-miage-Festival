@@ -18,6 +18,7 @@ public class DetailsActivity extends AppCompatActivity {
     TextView txt_artiste, txt_details, txt_website, txt_jour, txt_heure, txt_scene;
     Button btn_make_fav;
     private GroupModel band;
+    private AppContext app_context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +43,23 @@ public class DetailsActivity extends AppCompatActivity {
         txt_heure.setText(band.heure);
         txt_scene.setText(band.scene);
         Glide.with(this).load(HOST.URL+"/"+band.image).into(img_group_logo);
-        if(band.is_favorite){
+
+        app_context = ((AppContext) this.getApplication());
+        app_context.init();
+
+        if(app_context.inFavorites(band.id)){
             btn_make_fav.setText("supprimer des favoris");
         } else {
             btn_make_fav.setText("ajouter au favoris");
         }
+        btn_make_fav.setOnClickListener(view -> {
+            if(app_context.inFavorites(band.id)){
+                app_context.toggleFavorite(band.id);
+                btn_make_fav.setText("ajouter au favoris");
+            } else {
+                app_context.toggleFavorite(band.id);
+                btn_make_fav.setText("supprimer des favoris");
+            }
+        });
     }
 }
