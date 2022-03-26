@@ -30,9 +30,9 @@ public class AppContext extends Application {
     public void toggleFavorite(String id) {
         ArrayList<String> fav_bands = this.bands.getValue();
         if(fav_bands.contains(id)){
-            fav_bands.add(id);
-        } else {
             fav_bands.remove(id);
+        } else {
+            fav_bands.add(id);
         }
         this.bands.setValue(fav_bands);
     }

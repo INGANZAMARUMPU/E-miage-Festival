@@ -29,6 +29,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "=== PIZZA ===";
+    public ArrayList<String> jours = new ArrayList<>(), scenes = new ArrayList<>();
     private RecyclerView recycler;
     private String reminder;
     private ArrayList<GroupModel> bands = new ArrayList<>();
@@ -54,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         app_context.init();
 
         app_context.bands.observe(this, bands -> {
-            Log.i("==== MAIN ACTIVITY ====", bands.toString());
             adaptateur.notifyDataSetChanged();
         });
 
@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if(id == R.id.action_filter) {
+            new FormFilter(this).show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -154,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     );
                     fetched_band.id = band.id;
                     MainActivity.this.runOnUiThread(() -> {
+//                        if(jours.contains(fetched_band.jour))
+//                        if(scenes.contains(fetched_band.scene))
                         bands.set(i, fetched_band);
                         adaptateur.setData(bands);
                         adaptateur.notifyItemChanged(i);
@@ -164,5 +167,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public void filter(String jours, String scene) {
+
     }
 }
