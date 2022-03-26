@@ -39,7 +39,7 @@ public class FormFilter extends Dialog {
             context,
             R.layout.support_simple_spinner_dropdown_item,
             context.jours);
-        spinner_filter_scene.setAdapter(adapter_jour);
+        spinner_filter_jour.setAdapter(adapter_jour);
 
         ArrayAdapter adapter_scene = new ArrayAdapter(
             context,

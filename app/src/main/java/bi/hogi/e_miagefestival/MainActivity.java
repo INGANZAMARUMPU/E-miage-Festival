@@ -29,7 +29,8 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "=== PIZZA ===";
-    public ArrayList<String> jours = new ArrayList<>(), scenes = new ArrayList<>();
+    public ArrayList<String> jours = new ArrayList<>();
+    public ArrayList<String> scenes = new ArrayList<>();
     private RecyclerView recycler;
     private String reminder;
     private ArrayList<GroupModel> bands = new ArrayList<>();
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
         app_context = ((AppContext) this.getApplication());
         app_context.init();
+
+        jours.add("-");
+        scenes.add("-");
 
         app_context.bands.observe(this, bands -> {
             adaptateur.notifyDataSetChanged();
@@ -155,8 +159,8 @@ public class MainActivity extends AppCompatActivity {
                     );
                     fetched_band.id = band.id;
                     MainActivity.this.runOnUiThread(() -> {
-//                        if(jours.contains(fetched_band.jour))
-//                        if(scenes.contains(fetched_band.scene))
+                        if(!jours.contains(fetched_band.jour)) jours.add(fetched_band.jour);
+                        if(!scenes.contains(fetched_band.scene)) scenes.add(fetched_band.scene);
                         bands.set(i, fetched_band);
                         adaptateur.setData(bands);
                         adaptateur.notifyItemChanged(i);
@@ -169,7 +173,28 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void filter(String jours, String scene) {
-
+    public void filter(String jour, String scene) {
+        ArrayList<GroupModel> jour_bands = new ArrayList<>();
+        ArrayList<GroupModel> scene_bands = new ArrayList<>();
+        if(jour.equals("-")) {
+            jour_bands = bands;
+        } else {
+            for(GroupModel band : bands){
+                if(band.jour.equals(jour)){
+                    jour_bands.add(band);
+                }
+            }
+        }
+        if(scene.equals("-")) {
+            scene_bands = jour_bands;
+        } else {
+            for(GroupModel band : jour_bands){
+                if(band.scene.equals(scene)){
+                    scene_bands.add(band);
+                }
+            }
+        }
+        this.adaptateur.setData(scene_bands);
+        this.adaptateur.notifyDataSetChanged();
     }
 }
