@@ -54,10 +54,10 @@ public class DetailsActivity extends AppCompatActivity {
         }
         btn_make_fav.setOnClickListener(view -> {
             if(app_context.inFavorites(band.id)){
-                app_context.toggleFavorite(band.id);
+                app_context.toggleFavorite(band);
                 btn_make_fav.setText("ajouter au favoris");
             } else {
-                app_context.toggleFavorite(band.id);
+                app_context.toggleFavorite(band);
                 btn_make_fav.setText("supprimer des favoris");
             }
         });

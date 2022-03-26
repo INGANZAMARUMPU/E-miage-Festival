@@ -51,11 +51,11 @@ public class CardGroup extends RecyclerView.Adapter<CardGroup.GroupModelItem>{
             holder.btn_make_unfav.setVisibility(View.GONE);
         }
         holder.btn_make_unfav.setOnClickListener(v -> {
-            activity.app_context.toggleFavorite(band.id);
+            activity.app_context.toggleFavorite(band);
             notifyItemChanged(position);
         });
         holder.btn_make_fav.setOnClickListener(v -> {
-            activity.app_context.toggleFavorite(band.id);
+            activity.app_context.toggleFavorite(band);
             notifyItemChanged(position);
         });
         holder.itemView.setOnClickListener(view -> {
